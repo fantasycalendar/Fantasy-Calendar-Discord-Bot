@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  fantasy-calendar-bot:
+    container_name: fantasy_calendar_bot
+    build:
+      context: .
+    environment:
+      - "BOT_TOKEN=TOKEN"
