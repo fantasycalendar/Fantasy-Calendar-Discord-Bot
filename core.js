@@ -48,7 +48,7 @@ bot.on("message", async message => {
 		message.channel.send(new_message.join('\n'));
 	}
 	
-	/*if(args[0] === "connect"){
+	if(args[0] === "connect"){
 		if(args[1] === undefined){
 			message.channel.send("You need to enter the token that you generated through your Fantasy Calendar account.")
 			return;
@@ -101,7 +101,7 @@ bot.on("message", async message => {
 
 		message.channel.send(response);
 
-	}*/
+	}
 	
 });
 
@@ -110,14 +110,10 @@ bot.login(process.env.BOT_TOKEN);
 
 
 
-/*
-
-
 function authorize(guild_id, token){
 	return new Promise(resolve => {
 		
-		// If token is valid, add the guild_id to table for user, and return username to show in discord chat
-		resolve();
+		resolve("If token is valid, add the guild_id to table for user, and return username to show in discord chat");
 
 	});
 }
@@ -125,8 +121,7 @@ function authorize(guild_id, token){
 function get_all_calendars(guild_id){
 	return new Promise(resolve => {
 		
-		// If guild_id is found in table, return that users calendars as an array of objects, with names and hashes
-		resolve();
+		resolve("If guild_id is found in table, return that users calendars as an array of objects, with names and hashes");
 
 	});
 }
@@ -134,8 +129,7 @@ function get_all_calendars(guild_id){
 function set_calendar(guild_id, hash){
 	return new Promise(resolve => {
 		
-		// If guild_id is found in table and hash is a calendar owned by the guild_id table's row, set the hash to be used when get_calendar is called
-		resolve();
+		resolve("If guild_id is found in table and hash is a calendar owned by the guild_id table's row, set the hash to be used when get_calendar is called");
 
 	});
 }
@@ -143,8 +137,7 @@ function set_calendar(guild_id, hash){
 function get_calendar(guild_id){
 	return new Promise(resolve => {
 		
-		// If guild_id is found in table and it has a default calendar, return that calendar's name, and hash
-		resolve();
+		resolve("If guild_id is found in table and it has a default calendar, return that calendar's name, and hash");
 
 	});
 }
@@ -152,8 +145,7 @@ function get_calendar(guild_id){
 function get_calendar_date(guild_id, hash){
 	return new Promise(resolve => {
 		
-		// If guild_id is found in table and it has a default calendar or if the hash is provided, return that calendar's name, and formatted date
-		resolve();
+		resolve("If guild_id is found in table and it has a default calendar or if the hash is provided, return that calendar's name, and formatted date");
 
 	});
 }
@@ -161,8 +153,7 @@ function get_calendar_date(guild_id, hash){
 function set_date(guild_id, type, number){
 	return new Promise(resolve => {
 		
-		// If guild_id is found in table and it has a default calendar, set that calendar's date
-		resolve();
+		resolve("If guild_id is found in table and it has a default calendar, set that calendar's date");
 
 	});
 }
@@ -170,10 +161,8 @@ function set_date(guild_id, type, number){
 function add_date(guild_id, type, number){
 	return new Promise(resolve => {
 		
-		// If guild_id is found in table and it has a default calendar, set that calendar's date
-		resolve();
+		resolve("If guild_id is found in table and it has a default calendar, set that calendar's date");
 
 	});
 }
 
-*/
