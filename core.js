@@ -1,10 +1,6 @@
 const Discord = require("discord.js");
 
-//const FantasyCalendar = require("CalendarManager.js");
-
 const bot = new Discord.Client();
-
-//const manager = new FantasyCalendar.Manager();
 
 bot.on("ready", () => {
 	console.log(`Bot has started, with ${bot.users.size} users, in ${bot.channels.size} channels of ${bot.guilds.size} guilds.`); 
@@ -57,12 +53,12 @@ bot.on("message", async message => {
 			message.channel.send("You need to enter the token that you generated through your Fantasy Calendar account.")
 			return;
 		}
-		var response = await manager.authorize(message.guild.id, args[1]);
+		var response = await authorize(message.guild.id, args[1]);
 		message.channel.send(response);
 	}
 
 	if(args[0] === "calendars"){
-		var response = await manager.get_all_calendars(message.guild.id);
+		var response = await get_all_calendars(message.guild.id);
 		message.channel.send(response);
 	}
 
@@ -71,17 +67,17 @@ bot.on("message", async message => {
 			message.channel.send("You need to enter the ID of your calendar! Try `!fc calendars` to see the your calendars' IDs.")
 			return;
 		}
-		var response = await manager.set_calendar(message.guild.id, args[1]);
+		var response = await set_calendar(message.guild.id, args[1]);
 		message.channel.send(response);
 	}
 
 	if(args[0] === "calendar"){
-		var response = await manager.get_calendar(message.guild.id);
+		var response = await get_calendar(message.guild.id);
 		message.channel.send(response);
 	}
 
 	if(args[0] === "date"){
-		var response = await manager.get_calendar_date(message.guild.id, args[1]);
+		var response = await get_calendar_date(message.guild.id, args[1]);
 		message.channel.send(response);
 	}
 
@@ -98,9 +94,9 @@ bot.on("message", async message => {
 		}
 
 		if(args[0] === "add"){
-			var response = await manager.add_date(message.guild.id, args[1], args[2], args[3]);
+			var response = await add_date(message.guild.id, args[1], args[2], args[3]);
 		}else if(args[0] === "set"){
-			var response = await manager.add_date(message.guild.id, args[1], args[2], args[3]);
+			var response = await add_date(message.guild.id, args[1], args[2], args[3]);
 		}
 
 		message.channel.send(response);
@@ -116,56 +112,68 @@ bot.login(process.env.BOT_TOKEN);
 
 /*
 
-class Manager{
 
-	constructor(){
-
-		// connect to database I guess?
-
-	}
-
-	async authorize(guild_id, token){
-
+function authorize(guild_id, token){
+	return new Promise(resolve => {
+		
 		// If token is valid, add the guild_id to table for user, and return username to show in discord chat
+		resolve();
 
-	}
+	});
+}
 
-	async get_all_calendars(guild_id){
-
+function get_all_calendars(guild_id){
+	return new Promise(resolve => {
+		
 		// If guild_id is found in table, return that users calendars as an array of objects, with names and hashes
+		resolve();
 
-	}
+	});
+}
 
-	async set_calendar(guild_id, hash){
-
+function set_calendar(guild_id, hash){
+	return new Promise(resolve => {
+		
 		// If guild_id is found in table and hash is a calendar owned by the guild_id table's row, set the hash to be used when get_calendar is called
+		resolve();
 
-	}
+	});
+}
 
-	async get_calendar(guild_id){
-
+function get_calendar(guild_id){
+	return new Promise(resolve => {
+		
 		// If guild_id is found in table and it has a default calendar, return that calendar's name, and hash
+		resolve();
 
-	}
+	});
+}
 
-	async get_calendar_date(guild_id, hash){
-
+function get_calendar_date(guild_id, hash){
+	return new Promise(resolve => {
+		
 		// If guild_id is found in table and it has a default calendar or if the hash is provided, return that calendar's name, and formatted date
+		resolve();
 
-	}
+	});
+}
 
-	async set_date(guild_id, type, number){
-
+function set_date(guild_id, type, number){
+	return new Promise(resolve => {
+		
 		// If guild_id is found in table and it has a default calendar, set that calendar's date
+		resolve();
 
-	}
+	});
+}
 
-	async add_date(guild_id, type, number){
-
+function add_date(guild_id, type, number){
+	return new Promise(resolve => {
+		
 		// If guild_id is found in table and it has a default calendar, set that calendar's date
+		resolve();
 
-	}
-
+	});
 }
 
 */
