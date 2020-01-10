@@ -134,78 +134,201 @@ bot.on("message", async message => {
 	
 });
 
-
-
-
-function authorize(guild_id, token){
+function authorized(guild_id){
 
 	return new Promise(resolve => {
-
 		con.query(
 			"SELECT * FROM guilds WHERE guild_id = ? LIMIT 1",
 			[guild_id],
 			function(err, results){
 				if(err) throw err;
-				if(results.length > 0){
-					resolve("This server is already authorized! :)")
-				}
+				resolve(results.length > 0);
 			}
 		);
+	});
+}
+
+
+async function authorize(guild_id, token){
+
+	var is_authorized = await authorized(guild_id);
+
+	if(is_authorized){
+		return new Promise(resolve => {
+			resolve("This server is already authorized! :)");
+		});
+	}
+
+	return new Promise(resolve => {
 
 		con.query(
 			"INSERT INTO guilds (guild_id) VALUES (?)",
 			[guild_id],
 			function(err, results){
 				if(err) throw err;
-				resolve("If token is valid, add the guild_id to table for user, and return username to show in discord chat");
+				console.log(results)
+				resolve("Welcome `username`! You can check what calendars you have by typing `!fc calendars`");
 			}
 		);
 
 	});
 }
 
-function get_all_calendars(guild_id){
+async function get_all_calendars(guild_id){
+
+	var is_authorized = await authorized(guild_id);
+
+	if(!is_authorized){
+		return new Promise(resolve => {
+			resolve("You haven't connected your account yet.");
+		});
+	}
+
 	return new Promise(resolve => {
-		
-		resolve("If guild_id is found in table, return that users calendars as an array of objects, with names and hashes");
+
+		resolve("SIKE! This doesn't work yet.");
+	});
+
+}
+
+async function set_calendar(guild_id, hash){
+
+	var is_authorized = await authorized(guild_id);
+
+	if(!is_authorized){
+		return new Promise(resolve => {
+			resolve("You haven't connected your account yet.");
+		});
+	}
+
+	return new Promise(resolve => {
+
+		if(hash.length > 12){
+			resolve("That's not a good ID, stop.")
+		}
+
+		con.query(
+			"UPDATE guilds SET hash = ? WHERE guild_id = ?",
+			[hash, guild_id],
+			function(err, results){
+				if(err) throw err;
+				resolve(`Great! Your new calendar ID is \`${hash}\`!`);
+			}
+		);
 
 	});
 }
 
-function set_calendar(guild_id, hash){
+async function get_calendar(guild_id){
+
+	var is_authorized = await authorized(guild_id);
+
+	if(!is_authorized){
+		return new Promise(resolve => {
+			resolve("You haven't connected your account yet.");
+		});
+	}
+
+	var hash = await get_hash(guild_id);
+
 	return new Promise(resolve => {
-		
-		resolve("If guild_id is found in table and hash is a calendar owned by the guild_id table's row, set the hash to be used when get_calendar is called");
+
+		if(!hash){
+			resolve("You haven't set a default calendar yet. Try `!fc default [calendar ID]`.");
+		}else{
+			resolve(`This is your calendar ID: \`${hash}\``);
+		}
 
 	});
 }
 
-function get_calendar(guild_id){
+async function get_hash(guild_id){
 	return new Promise(resolve => {
-		
-		resolve("If guild_id is found in table and it has a default calendar, return that calendar's name, and hash");
-
+		con.query(
+			"SELECT hash FROM guilds WHERE guild_id = ? LIMIT 1",
+			[guild_id],
+			function(err, results){
+				if(err) throw err;
+				if(results.length > 0){
+					if(results[0].hash){
+						resolve(results[0].hash);
+					}
+				}
+				resolve(false);
+			}
+		);
 	});
 }
 
-function get_calendar_date(guild_id, hash){
+async function get_calendar_date(guild_id, hash){
+
+	var is_authorized = await authorized(guild_id);
+
+	if(!is_authorized){
+		return new Promise(resolve => {
+			resolve("You haven't connected your account yet.");
+		});
+	}
+
+	var hash = await get_hash(guild_id);
+	
 	return new Promise(resolve => {
+
+		if(!hash){
+			resolve("You haven't set a default calendar yet. Try `!fc set [calendar ID]`.");
+		}else{
+			resolve(`SIKE! No calendar date yet. This is your calendar ID though: \`${hash}\``);
+		}
 		
 		resolve("If guild_id is found in table and it has a default calendar or if the hash is provided, return that calendar's name, and formatted date");
 
 	});
 }
 
-function set_date(guild_id, type, number){
+async function set_date(guild_id, type, number){
+		
+	var is_authorized = await authorized(guild_id);
+
+	if(!is_authorized){
+		return new Promise(resolve => {
+			resolve("You haven't connected your account yet.");
+		});
+	}
+
+	var hash = await get_hash(guild_id);
+
 	return new Promise(resolve => {
+
+		if(!hash){
+			resolve("You haven't set a default calendar yet. Try `!fc set [calendar ID]`.");
+		}else{
+			resolve(`SIKE! No calendar date yet. This is your calendar ID though: \`${hash}\``);
+		}
 		
 		resolve("If guild_id is found in table and it has a default calendar, set that calendar's date");
 
 	});
 }
 
-function add_date(guild_id, type, number){
+async function add_date(guild_id, type, number){
+		
+	var is_authorized = await authorized(guild_id);
+
+	if(!is_authorized){
+		return new Promise(resolve => {
+			resolve("You haven't connected your account yet.");
+		});
+	}
+
+	var hash = await get_hash(guild_id);
+	
 	return new Promise(resolve => {
+
+		if(!hash){
+			resolve("You haven't set a default calendar yet. Try `!fc set [calendar ID]`.");
+		}else{
+			resolve(`SIKE! No calendar date yet. This is your calendar ID though: \`${hash}\``);
+		}
 		
 		resolve("If guild_id is found in table and it has a default calendar, set that calendar's date");
 
