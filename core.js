@@ -1,6 +1,35 @@
 const Discord = require("discord.js");
-
 const bot = new Discord.Client();
+const mysql = require('mysql');
+
+setTimeout(connect, 5000);
+
+var con = mysql.createConnection({
+	host: process.env.DB_HOST,
+	user: process.env.DB_USERNAME,
+	password: process.env.DB_PASSWORD,
+	database: process.env.DB_DATABASE
+});
+
+function connect(){
+
+	con.connect(function(err) {
+		if(err){
+			console.log(err)
+			con = mysql.createConnection({
+				host: process.env.DB_HOST,
+				user: process.env.DB_USERNAME,
+				password: process.env.DB_PASSWORD,
+				database: process.env.DB_DATABASE
+			});
+			setTimeout(connect, 5000);
+		}else{
+			console.log("##Successfully connected to MySQL container##");
+			bot.login(process.env.BOT_TOKEN);
+		}
+	});
+
+}
 
 bot.on("ready", () => {
 	console.log(`Bot has started, with ${bot.users.size} users, in ${bot.channels.size} channels of ${bot.guilds.size} guilds.`); 
@@ -105,15 +134,32 @@ bot.on("message", async message => {
 	
 });
 
-bot.login(process.env.BOT_TOKEN);
-
 
 
 
 function authorize(guild_id, token){
+
 	return new Promise(resolve => {
-		
-		resolve("If token is valid, add the guild_id to table for user, and return username to show in discord chat");
+
+		con.query(
+			"SELECT * FROM guilds WHERE guild_id = ? LIMIT 1",
+			[guild_id],
+			function(err, results){
+				if(err) throw err;
+				if(results.length > 0){
+					resolve("This server is already authorized! :)")
+				}
+			}
+		);
+
+		con.query(
+			"INSERT INTO guilds (guild_id) VALUES (?)",
+			[guild_id],
+			function(err, results){
+				if(err) throw err;
+				resolve("If token is valid, add the guild_id to table for user, and return username to show in discord chat");
+			}
+		);
 
 	});
 }

@@ -1,9 +1,29 @@
 version: '3'
 
 services:
-  fantasy-calendar-bot:
+  fantasy_calendar_bot_db:
+    image: mariadb:10.3
+    container_name: fc-db-mariadb
+    volumes:
+      - fantasy-calendar-discord-db:/var/lib/mysql
+      - ./setup/database.sql:/docker-entrypoint-initdb.d/dump.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fantasy_calendar_discord_bot
+    ports:
+      - "13306:3306"
+  fantasy_calendar_bot:
     container_name: fantasy_calendar_bot
+    depends_on:
+      - fantasy_calendar_bot_db
     build:
       context: .
     environment:
-      - "BOT_TOKEN=TOKEN"
+      - "BOT_TOKEN=token"
+      - "DB_HOST=fantasy_calendar_bot_db"
+      - "DB_DATABASE=fantasy_calendar_discord_bot"
+      - "DB_USERNAME=root"
+      - "DB_PASSWORD=root"
+
+volumes:
+  fantasy-calendar-discord-db:
